@@ -23,10 +23,10 @@ public class ParcelSizeService {
 	
 	public ParcelSizeService() {
 		db = MySQLDatabaseHandler.getDatabaseHandler();
-		db.openConnection("jdbc:mysql://mysql-pc-size:3306/ms_parcel_size?user=user&password=mysql");
+		//db.openConnection("jdbc:mysql://mysql-pc-size:3306/ms_parcel_size?user=user&password=mysql");
 		
-		parcelSizeMap = new HashMap<Integer,Parcelsize>();
-		parcelSizeMap = db.getParcelSizeTable();
+		//parcelSizeMap = new HashMap<Integer,Parcelsize>();
+		//parcelSizeMap = db.getParcelSizeTable();
 	
 	}
 	
@@ -41,7 +41,7 @@ public class ParcelSizeService {
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.TEXT_PLAIN)
 	@Path("size")
-	public Response calculateParcelSize(String json){
+	public String calculateParcelSize(String json){
 		
 		Gson g = new Gson();
 		Parcel parcel = g.fromJson(json, Parcel.class);
@@ -52,14 +52,15 @@ public class ParcelSizeService {
 			
 			if(girth < MAX_GIRTH){
 				int dim = parcel.getLongestSide()+parcel.getShortestSide();
-				for (Map.Entry<Integer, Parcelsize> entry : parcelSizeMap.entrySet())
+				/*for (Map.Entry<Integer, Parcelsize> entry : parcelSizeMap.entrySet())
 				{
 					if(dim <= entry.getKey()){
 						parcel.setSize(entry.getValue());
 						break;
 					}
 				
-				}
+				}*/
+				parcel.setSize(Parcelsize.L);
 			}else{
 				parcel.setSize(Parcelsize.UNDEFINED);
 			}
@@ -70,8 +71,8 @@ public class ParcelSizeService {
 		}
 		
 		System.out.println("Response: " + g.toJson(parcel));
-		return Response
-			      .status(200)
+		/*return Response
+			      .ok()
 			      .header("Access-Control-Allow-Origin", "*")
 			      .header("Access-Control-Allow-Credentials", "true")
 			      .header("Access-Control-Allow-Headers",
@@ -80,5 +81,7 @@ public class ParcelSizeService {
 			        "GET, POST, PUT, DELETE, OPTIONS, HEAD")
 			      .entity(resp)
 			      .build();
+		*/
+		return resp;
 	}
 }
