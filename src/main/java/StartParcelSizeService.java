@@ -33,7 +33,7 @@ public class StartParcelSizeService{
 		ResourceConfig rc = new PackagesResourceConfig("");
 		rc.getProperties().put("com.sun.jersey.spi.container.ContainerResponseFilters",
 								"main.java.CORSFilter");
-		
+		rc.getRootResourceClasses().add(ParcelSizeService.class);
 		
         //System.out.println(app.isProviderClass(CORSFilter.class));
 		HttpServer server;
